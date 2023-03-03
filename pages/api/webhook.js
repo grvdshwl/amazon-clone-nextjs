@@ -1,6 +1,7 @@
 import { buffer } from "micro";
-import admin from "firebase-admin";
-import { serviceAccount } from "@/permissions.js";
+import admin from "firebase-admin/app";
+
+let serviceAccount = require("../../permissions.json");
 
 const app = admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
