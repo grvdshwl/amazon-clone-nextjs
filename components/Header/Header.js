@@ -27,7 +27,7 @@ const Header = () => {
             height={40}
             style={{ objectFit: "contain" }}
             className="cursor-pointer"
-            alt="f90"
+            alt="amazon"
             onClick={() => {
               router.push("/");
             }}
@@ -50,7 +50,12 @@ const Header = () => {
             <p>{!!session ? `Hello ${session.user.name}` : "Sign In"}</p>
             <p className="font-extrabold md:text-sm">Account & Lists</p>
           </div>
-          <div className="link ">
+          <div
+            className="link "
+            onClick={() => {
+              router.push("/orders");
+            }}
+          >
             <p>Returns</p>
             <p className="font-extrabold md:text-sm">& orders</p>
           </div>

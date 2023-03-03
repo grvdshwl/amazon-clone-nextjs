@@ -2,15 +2,40 @@ import CheckoutProduct from "@/components/CheckoutProduct/CheckoutProduct.js";
 import Header from "@/components/Header/Header.js";
 import { selectItems, selectItemsTotal } from "@/slices/basketSlice.js";
 import Image from "next/image.js";
-import React, { use } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
+
+const stripePromise = loadStripe(process.env.stripe_public_key);
 
 const Checkout = () => {
   const { data: session, status } = useSession();
 
   const items = useSelector(selectItems);
   const total = useSelector(selectItemsTotal);
+
+  const createCheckoutSession = async () => {
+    const stripe = await stripePromise;
+
+    //call the backend to create a checkout session.
+
+    const checkoutSession = await axios.post("/api/create-checkout-session", {
+      items: items,
+      email: session.user.email,
+    });
+
+    //Redirect user to stripe checkout
+
+    const result = await stripe.redirectToCheckout({
+      sessionId: checkoutSession.data.id,
+    });
+
+    if (result.error) {
+      alert(result.error.message);
+    }
+  };
 
   return (
     <div>
@@ -46,11 +71,12 @@ const Checkout = () => {
               <h2 className="whitespace-nowrap">
                 Subtotal({items.length} items):{" "}
                 <span className="font-bold mx-2">
-                  <span className="text-bold">${total}</span>
+                  <span className="text-bold">&#8377;{total}</span>
                 </span>
                 <button
+                  onClick={createCheckoutSession}
                   disabled={!session}
-                  className={`button mt-2 ${
+                  className={`link button mt-2 ${
                     !session &&
                     " from-gray-300 to-gray-500 border-gray-200 cursor-not-allowed"
                   } `}

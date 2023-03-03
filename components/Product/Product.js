@@ -60,7 +60,7 @@ const Product = ({ id, title, price, description, category, image }) => {
       <p className="text-xs my-2 line-clamp-2">{description}</p>
 
       <div className="mb-5">
-        <span className="text-bold">${price}</span>
+        <span className="text-bold">&#8377;{price}</span>
       </div>
 
       {hasPrime && (
