@@ -1,17 +1,11 @@
 import { buffer } from "micro";
 import admin from "firebase-admin";
+import { serviceAccount } from "@/permissions.js";
 
-let serviceAccount = require("../../permissions.json");
-
-if (!admin.apps.length) {
-  try {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-    });
-  } catch (error) {
-    console.log("Firebase admin initialization error", error.stack);
-  }
-}
+const app = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://amazon-clone-nextjs.firebaseio.com",
+});
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.STRIPE_SIGNING_SECRET;
