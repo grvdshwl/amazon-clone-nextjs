@@ -1,17 +1,24 @@
 import { buffer } from "micro";
 var admin = require("firebase-admin");
 var serviceAccount = require("../../permissions.json");
+var {
+  getFirestore,
+  Timestamp,
+  FieldValue,
+} = require("firebase-admin/firestore");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
+
+const firestore = getFirestore();
+
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.STRIPE_SIGNING_SECRET;
 
 const fullfillOrder = async (session) => {
   console.log("fullfilling order", session);
-  return app
-    .firestore()
+  return firestore
     .collection("users")
     .doc(session.metadata.email)
     .collection("orders")
