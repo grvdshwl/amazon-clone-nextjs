@@ -1,10 +1,9 @@
 import { buffer } from "micro";
-import admin from "firebase-admin/app";
+import { initializeApp } from "firebase-admin/app";
+import { serviceAccount } from "@/permissions.js";
 
-let serviceAccount = require("../../permissions.json");
-
-const app = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+const app = initializeApp({
+  credential: app.credential.cert(serviceAccount),
   databaseURL: "https://amazon-clone-nextjs.firebaseio.com",
 });
 
