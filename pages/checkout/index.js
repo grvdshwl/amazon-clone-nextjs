@@ -4,7 +4,6 @@ import { selectItems, selectItemsTotal } from "@/slices/basketSlice.js";
 import Image from "next/image.js";
 import React, { use } from "react";
 import { useSelector } from "react-redux";
-import Currency from "react-currency-formatter";
 import { useSession } from "next-auth/react";
 
 const Checkout = () => {
@@ -47,7 +46,7 @@ const Checkout = () => {
               <h2 className="whitespace-nowrap">
                 Subtotal({items.length} items):{" "}
                 <span className="font-bold mx-2">
-                  <Currency quantity={total} currency="GBP" />
+                  <span className="text-bold">${total}</span>
                 </span>
                 <button
                   disabled={!session}
